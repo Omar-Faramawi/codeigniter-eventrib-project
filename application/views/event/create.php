@@ -171,7 +171,7 @@ if($this->session->flashdata('errors')){
                <center>Internal Map</center>
                <input type="text" name='inmap' value="0" style="width:0px; height:0px; visibility:hidden;">
             </div>
-            <div class="feature" id="switchEvent" ftype='Events' style="padding-top:24px;border-bottom:1px solid #e0e0e0;" draggable="true" ondragstart="drag(event)">
+            <div class="feature" id="switchEvent" ftype='Events' style="padding-top:24px;" draggable="true" ondragstart="drag(event)">
                <center>Switch Event</center>
                <input type="text" name='switchEvent' value="0" style="width:0px; height:0px; visibility:hidden;">
             </div>
@@ -182,6 +182,10 @@ if($this->session->flashdata('errors')){
             <div class="feature" id="ideas" ftype='Ideas' style="border-left:1px solid #e0e0e0;border-bottom:1px solid #e0e0e0;" draggable="true" ondragstart="drag(event)">
                <center>Ideas</center>
                <input type="text" name='ideas' value="0" style="width:0px; height:0px; visibility:hidden;">
+            </div>
+            <div class="feature" id="people" ftype='People' style="border-bottom:1px solid #e0e0e0;" draggable="true" ondragstart="drag(event)">
+               <center>People</center>
+               <input type="text" name='people' value="0" style="width:0px; height:0px; visibility:hidden;">
             </div>
          </div>
          <div class="col-xs-6">

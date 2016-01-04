@@ -78,7 +78,7 @@
 													foreach($events as $event){
 														?>
 												<div class="col-xs-12" id="<?= $event->id; ?>">
-													<img class="pull-left width-3" src="<?php echo base_url(); ?>uploads/events_thumbnails/<?= $event->image; ?>" alt="" />
+													<img class="pull-left width-3" src="<?php echo $event->image;?>" alt="" />
 													<p>
 														<a class="text-medium text-lg text-primary" href="#"><?= $event->name; ?></a> <?php $date = $event->date; $result = $date->format('Y-m-d H:i:s'); echo $result; ?> <br/>
 														<a class="opacity-75" href="#"></a>

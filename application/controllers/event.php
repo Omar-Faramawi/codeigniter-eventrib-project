@@ -190,7 +190,8 @@ class Event extends Dashboard {
 				'inmap' => $this->input->post('inmap'),
 				'switchEvent' => $this->input->post('switchEvent'),
 				'photos' => $this->input->post('photos'),
-				'ideas' => $this->input->post('ideas')
+				'ideas' => $this->input->post('ideas'),
+				'people' => $this->input->post('people')
 				),
 			'icon_name' => $icon_name,
 			'thumbnail_name' => $thumbnail_name
@@ -209,7 +210,10 @@ class Event extends Dashboard {
 
 	public function cookie_test(){
 		$getCookie = get_cookie('event-create-step1');
-		print_r(unserialize($getCookie));
+		$array = unserialize($getCookie);
+		//echo $array['features']['speakers'];
+		print_r($array);
+
 	}
 
 	public function content_submit(){
@@ -316,7 +320,8 @@ class Event extends Dashboard {
 					"pin_name" => $this->input->post('exmapPoint-'.$i.'-pin_name'),
 					"address" => $this->input->post('exmapPoint-'.$i.'-address'),
 					"lat" => $this->input->post('exmapPoint-'.$i.'-lat'),
-					"long" => $this->input->post('exmapPoint-'.$i.'-long')
+					"long" => $this->input->post('exmapPoint-'.$i.'-long'),
+					"order" => $this->input->post('exmapPoint-'.$i.'-order')
 				);
 
 			array_push($exmapPoints, $exmapPoint);
@@ -372,7 +377,9 @@ class Event extends Dashboard {
 			//$day->day = $this->input->post('day-'.$i.'-day');
 
 			$day = array(
-					"day" => $this->input->post('day-'.$i.'-day')
+					"day" => $this->input->post('day-'.$i.'-day'),
+					"date" => $this->input->post('day-'.$i.'-date'),
+					"dayorder" => $this->input->post('day-'.$i.'-dayorder')
 				);
 
 			$items = array();
@@ -401,6 +408,7 @@ class Event extends Dashboard {
 						"from" => $this->input->post('day-'.$i.'-item-'.$y.'-from'),
 						"to" => $this->input->post('day-'.$i.'-item-'.$y.'-to'),
 						"speaker" => $this->input->post('day-'.$i.'-item-'.$y.'-speaker'),
+						"order" => $this->input->post('day-'.$i.'-item-'.$y.'-order'),
 						"image" => $item_image
 					);
 
@@ -425,9 +433,13 @@ class Event extends Dashboard {
 			);
 		//print_r($cookie_data);
 		$credentials = parent::get_credentials_objcet();
-		$this->load->model('event_model', 'EvenModel');
-		$event = $this->EvenModel->save_event($cookie_data, $credentials);
-		print_r($event);
+		$this->load->model('event_model', 'EventModel');
+		$event = $this->EventModel->save_event(unserialize(get_cookie('event-create-step1')), $cookie_data, $credentials);
+		if(is_array($event)){
+			print_r($event);
+		}else{
+			echo $event;
+		}
 		// $serialized_cookie = serialize($cookie_data);
 	 //    $expire = time() + 2678400;
 		// $cookie = array(

@@ -104,10 +104,22 @@
         <div id='agenda-card-content'>
         <div class="card-body" id="agenda-card">
              <div class="row">
-               <div class="col-sm-12">
+               <div class="col-sm-6">
                   <div class="form-group">
                      <input type="text" class="form-control" name="0-0-agenda-day" value='Day 1'>
                      <label for="Firstname1" style="top:-13px;">Day</label>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="form-group">
+                     <input type="text" class="form-control datepicker" name="0-0-agenda-date">
+                     <label for="Firstname1" style="top:-13px;">Date</label>
+                  </div>
+               </div>
+               <div class="col-sm-12">
+                  <div class="form-group">
+                     <input type="text" class="form-control" name="0-0-agenda-thisorder">
+                     <label for="Firstname1" style="top:-13px;">Order</label>
                   </div>
                </div>
             </div>
@@ -275,11 +287,15 @@
 <div class="row" style="margin-top:20px;" id="surveys-container">
       <div class="card" >
          <div class="card-head style-primary custom-card-head">
+         
             <header>Surveys</header>
          </div>
       	<div id='survey-card-content'>
         <div class="card-body" id="survey-card">
              <div class="row">
+              <!--<div class="col-md-12">
+                <a class="btn btn-icon-toggle btn-close pull-right event-create-close-card"><i class="md md-close"></i></a>
+              </div>-->             
                <div class="col-sm-6">
                   <div class="form-group">
                      <input type="text" class="form-control" name="0-survey-name">
@@ -308,8 +324,10 @@
                      <input type="text" class="form-control" name="0-0-survey-question">
                      <label for="Firstname1" style="top:-13px;">Add question</label>
                   </div>
+                  
                   <a style="cursor:pointer" class='add-another-question'><i class="md md-control-point"></i>  Add another question</a>
-            	</div>
+            	    
+              </div>
             </div>
          </div>
          </div>
@@ -353,6 +371,12 @@
                   <div class="form-group">
                      <input type="text" class="form-control" name="0-exmap-long">
                      <label for="Firstname1" style="top:-13px;">Longitude</label>
+                  </div>
+               </div>
+                <div class="col-sm-12">
+                  <div class="form-group">
+                     <input type="text" class="form-control" name="0-exmap-order">
+                     <label for="Firstname1" style="top:-13px;">Order</label>
                   </div>
                </div>
             </div>
@@ -434,7 +458,7 @@
                 </div>
   </div>
 <a id='save-content' class="btn ink-reaction btn-raised btn-primary pull-right next-btn">Create Event <i class="md md-keyboard-arrow-right"></i></a>
-<a id='prev-content' class="btn ink-reaction btn-raised btn-primary pull-left next-btn">prev <i class="md md-keyboard-arrow-right"></i></a>
+<a id='prev-content' class="btn ink-reaction btn-raised btn-primary pull-left next-btn" style="margin-left:-25px;"><i class="md md-keyboard-arrow-left"></i> Edit content</a>
 
 </div>
 </div>

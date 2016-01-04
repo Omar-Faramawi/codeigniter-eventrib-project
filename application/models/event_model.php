@@ -6,7 +6,7 @@ class Event_model extends CI_Model{
 		return $events;
 	}
 
-	function save_event($event, $credentials){
-		return $this->application_parse->save_event($event, $credentials);
+	function save_event($features, $event, $credentials){
+		return $this->application_parse->save_event($features, $event, $credentials);
 	}
 }

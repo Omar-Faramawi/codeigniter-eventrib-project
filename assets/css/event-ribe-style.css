@@ -64,7 +64,7 @@
     border-bottom:0;
 }
 .selected-features{
-    height: 632px !important;
+    height: 676px !important;
     border: 1px dashed #ccc !important;
 }
 .default-drag{
@@ -122,4 +122,10 @@
     margin-left: -12px;
     margin-bottom: -24px;
     margin-top: 19px;
+}
+.event-create-close-card {
+    margin-top: -24px;
+    position: absolute;
+    z-index: 1;
+    right: -12px;
 }

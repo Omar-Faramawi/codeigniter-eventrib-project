@@ -23,6 +23,8 @@
 		<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-default/libs/bootstrap-datepicker/datepicker3.css?1424887858" />
 		<link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/theme-default/libs/dropzone/dropzone-theme.css?1424887864" />
 		<link type="text/css" rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.timepicker.css" />
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 
 		
 		

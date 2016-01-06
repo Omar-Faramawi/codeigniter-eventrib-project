@@ -432,6 +432,7 @@
 </div>
 <?php } ?>
 <a id='submit-content' class="btn ink-reaction btn-raised btn-primary pull-right next-btn">Next <i class="md md-keyboard-arrow-right"></i></a>
+<a href='<?= base_url(); ?>event/create' class="btn ink-reaction btn-raised btn-primary pull-left next-btn" style="margin-left:-25px;"><i class="md md-keyboard-arrow-left"></i> Features</a>
 </div>
 <div id="publish-clear" style="display:none;">
   <div class="row" style="margin-top:20px;" id="inmap-container">

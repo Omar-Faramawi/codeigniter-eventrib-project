@@ -13,11 +13,11 @@
       <div class="row">
          <div class="col-md-8 col-xs-12">
             <div style="height:54px;" class="row">
-               <div class='step-con' id='step-con-features' onclick="window.location='<?= base_url(); ?>event/create';">
+               <div class='step-con' id='step-con-features'>
                   <div class="step  <?php if($current == 'Features'){ echo ' active-eventribe'; }?>">Features</div>
                   <div class="arrow-right <?php if($current == 'Features'){ echo ' active-arrow'; }?>"></div>
                </div>
-               <div class='step-con' id='step-con-content'  onclick="window.location='<?= base_url(); ?>event/create_content';">
+               <div class='step-con' id='step-con-content'>
                   <div class="arrow-left"></div>
                   <div class="step <?php if($current == 'Content'){ echo ' active-eventribe'; }?>">Content</div>
                   <div class="arrow-right <?php if($current == 'Content'){ echo ' active-arrow'; }?>"></div>

@@ -2,8 +2,8 @@ var day = 1;
 var speaker_count = parseInt($('#add-another-speaker').attr('count')) + 1;
 var survey_count = parseInt($('#add-another-survey').attr('count'));
 var question_count = 0;
-var exmap_count = 1;
-var inmap_count = 1;
+var exmap_count = parseInt($('#add-another-exmap').attr('count'));
+var inmap_count = parseInt($('#add-another-inmap').attr('count'));
 var exhibitor_count = parseInt($('#add-another-exhibitor').attr('count'));
 var day_count = parseInt($('#add-another-agenda').attr('count'));
 var agenda_item_count = 0;
@@ -67,11 +67,17 @@ $(document).on('focus', "select[name*='-agenda-speaker']", function(){
 });
 
 $(document).on('click', "#add-another-exmap", function(){
+	if(exmap_count == 0){
+		exmap_count++;
+	}
 	$('#exmap-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;' id='exmap-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exmap_count+"-exmap-pin-name'> <label for='Firstname1' style='top:-13px;'>Pin Name</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exmap_count+"-exmap-address'> <label for='Firstname1' style='top:-13px;'>Address</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exmap_count+"-exmap-lat'> <label for='Firstname1' style='top:-13px;'>Latitude</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exmap_count+"-exmap-long'> <label for='Firstname1' style='top:-13px;'>Longitude</label> </div> </div> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+exmap_count+"-exmap-order'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div></div>");
 	exmap_count++;
 });
 
 $(document).on('click', "#add-another-inmap", function(){
+	if(inmap_count == 0){
+		inmap_count++;
+	}
 	$('#inmap-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;'id='inmap-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+inmap_count+"-inmap-name'> <label for='Firstname1' style='top:-13px;'>Header</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+inmap_count+"-inmap-image' typec='inmap-"+inmap_count+"-thumbnail-browser' id='filename-inmap-"+inmap_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='inmap-"+inmap_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='inmap-"+inmap_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='inmap-"+inmap_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='inmap-"+inmap_count+"-thumbnail' img='inmap-"+inmap_count+"-thumbnail-browser'>Cancel</a> </div> </div></div>");
 	inmap_count++;
 });

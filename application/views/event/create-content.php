@@ -805,7 +805,69 @@
       ?>
    <?php } ?>
    <!-- External Map -->
-   <?php if($features['exmap'] != "0" ){ ?>
+   <?php if($features['exmap'] != "0" ){ 
+      $exmapPoints_count = 0;
+      if(isset($object) && count($object->exmapPoints) != 0 && $object->exmapPoints[0]->pin_name != ""){
+         ?>
+   <div class="row" style="margin-top:20px;" id="exmap-container">
+      <div class="card" >
+         <div class="card-head style-primary custom-card-head">
+            <header>External Map</header>
+         </div>
+         <div id='exmap-card-content'>
+            <?php
+               for($i = 0; $i < count($object->exmapPoints); $i++){
+                  ?>
+            <div class="card-body" id="exmap-card" style='border-top:1px solid #ccc;'>
+               <div class="row">
+                  <div class="col-md-12"> <a class="btn btn-icon-toggle btn-close pull-right event-create-close-card"><i class="md md-close"></i></a> </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->exmapPoints[$i]->pin_name; ?>' name="<?= $i; ?>-exmap-pin-name">
+                        <label for="Firstname1" style="top:-13px;">Pin Name</label>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->exmapPoints[$i]->address; ?>' name="<?= $i; ?>-exmap-address">
+                        <label for="Firstname1" style="top:-13px;">Address</label>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->exmapPoints[$i]->lat; ?>' name="<?= $i; ?>-exmap-lat">
+                        <label for="Firstname1" style="top:-13px;">Latitude</label>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->exmapPoints[$i]->long; ?>' name="<?= $i; ?>-exmap-long">
+                        <label for="Firstname1" style="top:-13px;">Longitude</label>
+                     </div>
+                  </div>
+                  <div class="col-sm-12">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->exmapPoints[$i]->order; ?>' name="<?= $i; ?>-exmap-order">
+                        <label for="Firstname1" style="top:-13px;">Order</label>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <?php
+               $exmapPoints_count++;
+                  }
+                  ?>
+         </div>
+         <div class="card-head style-default" count='<?= $exmapPoints_count; ?>' style="cursor:pointer;" id='add-another-exmap'>
+            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another pin</center>
+         </div>
+      </div>
+   </div>
+   <?php
+      }else{
+         ?>
    <div class="row" style="margin-top:20px;" id="exmap-container">
       <div class="card" >
          <div class="card-head style-primary custom-card-head">
@@ -849,14 +911,67 @@
                </div>
             </div>
          </div>
-         <div class="card-head style-default" style="cursor:pointer;" id='add-another-exmap'>
+         <div class="card-head style-default" count='0' style="cursor:pointer;" id='add-another-exmap'>
             <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another pin</center>
          </div>
       </div>
    </div>
+   <?php
+      }
+      ?>
    <?php } ?>
    <!-- Internal Map -->
-   <?php if($features['inmap'] != "0" ){ ?>
+   <?php if($features['inmap'] != "0" ){ 
+      $inmapSections_count = 0;
+      if(isset($object) && count($object->inmapSections) != 0 && $object->inmapSections[0]->header != ""){
+         ?>
+   <div class="row" style="margin-top:20px;" id="inmap-container">
+      <div class="card" >
+         <div class="card-head style-primary custom-card-head">
+            <header>Internal Map</header>
+         </div>
+         <div id='inmap-card-content'>
+            <?php
+               for($i = 0; $i < count($object->inmapSections); $i++){
+                  ?>
+            <div class="card-body" id="inmap-card" style='border-top:1px solid #ccc;'>
+               <div class="row">
+                  <div class="col-md-12"> <a class="btn btn-icon-toggle btn-close pull-right event-create-close-card"><i class="md md-close"></i></a> </div>
+                  <div class="col-sm-12">
+                     <div class="form-group">
+                        <input type="text" class="form-control" value='<?= $object->inmapSections[$i]->header; ?>'  name="<?= $i; ?>-inmap-name">
+                        <label for="Firstname1" style="top:-13px;">Header</label>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <h4>Image</h4>
+                     <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class='btn btn-primary btn-file' >
+                        Browse… <input type='file' multiple='' name='<?= $i; ?>-inmap-image' typec='inmap-<?= $i; ?>-thumbnail-browser' id='filename-inmap-<?= $i; ?>-thumbnail'>
+                        </span>
+                        </span>
+                        <input type='text' class='form-control' readonly='' id='inmap-<?= $i; ?>-thumbnail'>
+                     </div>
+                     <img src='<?= base_url(); ?><?php if($object->inmapSections[$i]->image != ""){echo "uploads/tmp/".$object->inmapSections[$i]->image;} ?>' id='inmap-<?= $i; ?>-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:<?php if($object->inmapSections[$i]->image != ""){echo"block";}else{echo"none";} ?>;'> <a  id='inmap-<?= $i; ?>-thumbnail-browser' style='display:<?php if($object->inmapSections[$i]->image != ""){echo"block";}else{echo"none";} ?>;cursor:pointer;' class='canceluploadcontent' url='<?= base_url().'event/cancel_upload_from_json/inmapSections/'.$i; ?>' field='inmap-<?= $i; ?>-thumbnail' img='inmap-<?= $i; ?>-thumbnail-browser'>Cancel</a>
+                  </div>
+               </div>
+            </div>
+            <?php
+               $inmapSections_count++;
+                  }
+                  ?>
+         </div>
+         <div class="card-head style-default" count='<?= $inmapSections_count; ?>' style="cursor:pointer;" id='add-another-inmap'>
+            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another internal map</center>
+         </div>
+      </div>
+   </div>
+   <?php
+      }else{
+         ?>
    <div class="row" style="margin-top:20px;" id="inmap-container">
       <div class="card" >
          <div class="card-head style-primary custom-card-head">
@@ -888,11 +1003,14 @@
                </div>
             </div>
          </div>
-         <div class="card-head style-default" style="cursor:pointer;" id='add-another-inmap'>
+         <div class="card-head style-default" count='0' style="cursor:pointer;" id='add-another-inmap'>
             <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another internal map</center>
          </div>
       </div>
    </div>
+   <?php    
+      }
+      ?>
    <?php } ?>
    <a id='submit-content' to='publish' class="btn ink-reaction btn-raised btn-primary pull-right next-btn">Next <i class="md md-keyboard-arrow-right"></i></a>
    <a id='submit-content' to='features' class="btn ink-reaction btn-raised btn-primary pull-left next-btn" style="margin-left:-25px;"><i class="md md-keyboard-arrow-left"></i> Features</a>

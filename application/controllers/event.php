@@ -328,7 +328,13 @@ class Event extends Dashboard
                 $file_data          = $this->upload->data();
                 $inmapSection_image = $file_data['file_name'];
             } else {
-                $inmapSection_image = "";
+                if(file_exists('uploads/tmpjson/'.$this->session->userdata('user').'.json')){
+                    $json = file_get_contents(base_url().'uploads/tmpjson/'.$this->session->userdata('user').'.json');
+                    $object = json_decode($json);
+                    $inmapSection_image = $object->inmapSections[$i]->image;
+                  }else{
+                    $inmapSection_image = "";
+                  }
             }
             
             $inmapSection = array(
@@ -442,6 +448,8 @@ class Event extends Dashboard
                 $object->agenda[$split[0]]->items[$split[1]]->image = "";
             }elseif($type=="exhibitors"){
                 $object->exhibitors[$key]->image = "";
+            }elseif($type=="inmapSections"){
+                $object->inmapSections[$key]->image = "";
             }
 	        $jsonUpdated = json_encode($object);
 	        $jsonFileName = 'uploads/tmpjson/'.$this->session->userdata('user').'.json';

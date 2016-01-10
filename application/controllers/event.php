@@ -77,23 +77,6 @@ class Event extends Dashboard
         }
     }
     
-    public function create_appstore()
-    {
-        if (parent::check_authority() == true) {
-            $data            = parent::get_header_data();
-            $data['events']  = parent::get_canvas_right_data();
-            $data['menubar'] = 0;
-            $data['current'] = "AppStore";
-            $this->load->view("event/header", $data);
-            $this->load->view("event/offcanvas-left", $data);
-            $this->load->view("event/create-event-header", $data);
-            $this->load->view("event/create-app-store", $data);
-            $this->load->view("event/app-preview");
-            //$this->load->view("application/menubar", $data);
-            $this->load->view("event/offcanvas-right", $data);
-            $this->load->view("event/footer", $data);
-        }
-    }
     
     public function create_review()
     {
@@ -153,29 +136,38 @@ class Event extends Dashboard
                 $this->load->library('upload', $config);
                 
                 $icon = 'icon';
-                if ($this->upload->do_upload($icon) == FALSE) {
-                    
+                if ($this->upload->do_upload($icon) == FALSE && isset($storedCookie['icon_name']) == FALSE) {
                     $this->session->set_flashdata('errors', $this->upload->display_errors());
                     redirect(base_url() . 'event/create');
                 } else {
                     $file_data = $this->upload->data();
-                    if ($file_data['image_width'] < 666) {
-                        unlink('uploads/tmp/' . $file_data['file_name']);
-                        $this->session->set_flashdata('errors', "The minimum icon width is 666 pixels");
-                        redirect(base_url() . 'event/create');
-                    } elseif ($file_data['image_height'] < 666) {
-                        unlink('uploads/tmp/' . $file_data['file_name']);
-                        $this->session->set_flashdata('errors', "The minimum icon height is 666 pixels");
-                        redirect(base_url() . 'event/create');
+                    if($this->upload->do_upload($icon)){
+	                    if ($file_data['image_width'] < 666) {
+	                        unlink('uploads/tmp/' . $file_data['file_name']);
+	                        $this->session->set_flashdata('errors', "The minimum icon width is 666 pixels");
+	                        redirect(base_url() . 'event/create');
+	                    } elseif ($file_data['image_height'] < 666) {
+	                        unlink('uploads/tmp/' . $file_data['file_name']);
+	                        $this->session->set_flashdata('errors', "The minimum icon height is 666 pixels");
+	                        redirect(base_url() . 'event/create');
+	                    }
+	                    $icon_name = $file_data['file_name'];	
+                    }else{
+                    	$icon_name = $storedCookie['icon_name'];
                     }
-                    $icon_name = $file_data['file_name'];
+
+                    
                     $thumbnail = 'thumbnail';
-                    if ($this->upload->do_upload($thumbnail) == FALSE) {
+                    if ($this->upload->do_upload($thumbnail) == FALSE && isset($storedCookie['thumbnail_name']) == FALSE) {
                         $this->session->set_flashdata('errors', $this->upload->display_errors());
                         redirect(base_url() . 'event/create');
                     } else {
                         $file_data      = $this->upload->data();
-                        $thumbnail_name = $file_data['file_name'];
+                        if($this->upload->do_upload($thumbnail)){
+	                        $thumbnail_name = $file_data['file_name'];
+                        }else{
+                        	$thumbnail_name = $storedCookie['thumbnail_name'];
+                        }
                     }
                     
                 }
@@ -233,7 +225,9 @@ class Event extends Dashboard
         print_r($array);
         
     }
-    
+    public function session_test(){
+    	print_r($this->session->all_userdata());
+    }
     public function cookie_delete()
     {
         delete_cookie('event-create-step1');
@@ -259,7 +253,13 @@ class Event extends Dashboard
                 $file_data     = $this->upload->data();
                 $speaker_image = $file_data['file_name'];
             } else {
-                $speaker_image = "";
+            	if(file_exists('uploads/tmpjson/'.$this->session->userdata('user').'.json')){
+			        $json = file_get_contents(base_url().'uploads/tmpjson/'.$this->session->userdata('user').'.json');
+			        $object = json_decode($json);
+			        $speaker_image = $object->speakers[$i]->image;
+			      }else{
+	                $speaker_image = "";
+			      }
             }
             
             $speaker = array(
@@ -285,7 +285,13 @@ class Event extends Dashboard
                 $file_data       = $this->upload->data();
                 $exhibitor_image = $file_data['file_name'];
             } else {
-                $exhibitor_image = "";
+                if(file_exists('uploads/tmpjson/'.$this->session->userdata('user').'.json')){
+                    $json = file_get_contents(base_url().'uploads/tmpjson/'.$this->session->userdata('user').'.json');
+                    $object = json_decode($json);
+                    $exhibitor_image = $object->exhibitors[$i]->image;
+                  }else{
+                    $exhibitor_image = "";
+                  }
             }
             
             $exhibitor = array(
@@ -365,7 +371,13 @@ class Event extends Dashboard
                     $file_data  = $this->upload->data();
                     $item_image = $file_data['file_name'];
                 } else {
-                    $item_image = "";
+                    if(file_exists('uploads/tmpjson/'.$this->session->userdata('user').'.json')){
+                        $json = file_get_contents(base_url().'uploads/tmpjson/'.$this->session->userdata('user').'.json');
+                        $object = json_decode($json);
+                        $item_image = $object->agenda[$i]->items[$y]->image;
+                    }else{
+                        $item_image = "";
+                    }
                 }
                 
                 $item = array(
@@ -393,15 +405,51 @@ class Event extends Dashboard
             'inmapSections' => $inmapSections,
             'surveys' => $surveys
         );
-        //print_r($cookie_data);
-        $credentials = parent::get_credentials_objcet();
-        $this->load->model('event_model', 'EventModel');
-        $event = $this->EventModel->save_event(unserialize(get_cookie('event-create-step1')), $cookie_data, $credentials);
-        if (is_array($event)) {
-            print_r($event);
-        } else {
-            echo $event;
+
+        if($this->input->post('action') == 'savejson'){
+        	$jsonFileName = 'uploads/tmpjson/'.$this->session->userdata('user').'.json';
+        	$json = json_encode($cookie_data);
+        	$fp = fopen($jsonFileName, 'w');
+			fwrite($fp, $json);
+			fclose($fp);
+			print_r($cookie_data);
+        }elseif($this->input->post('action') == 'saveparse'){
+        	$jsonFileName = 'uploads/tmpjson/'.$this->session->userdata('user').'.json';
+        	$json = json_encode($cookie_data);
+        	$fp = fopen($jsonFileName, 'w');
+			fwrite($fp, $json);
+			fclose($fp);
+        	$credentials = parent::get_credentials_objcet();
+	        $this->load->model('event_model', 'EventModel');
+	        $event = $this->EventModel->save_event(unserialize(get_cookie('event-create-step1')), $cookie_data, $credentials);
+	        if (is_array($event)) {
+	            print_r($event);
+	        } else {
+	            echo $event;
+	        }	
         }
+    }
+
+    public function cancel_upload_from_json($type, $key){
+    	if (parent::check_authority() == true) {
+    		if(file_exists('uploads/tmpjson/'.$this->session->userdata('user').'.json')){
+	        $json = file_get_contents(base_url().'uploads/tmpjson/'.$this->session->userdata('user').'.json');
+	        $object = json_decode($json);
+	        if($type=="speakers"){
+		        $object->speakers[$key]->image = "";
+	        }elseif($type=="agenda"){
+                $split = explode(".", $key);
+                $object->agenda[$split[0]]->items[$split[1]]->image = "";
+            }elseif($type=="exhibitors"){
+                $object->exhibitors[$key]->image = "";
+            }
+	        $jsonUpdated = json_encode($object);
+	        $jsonFileName = 'uploads/tmpjson/'.$this->session->userdata('user').'.json';
+	        $fp = fopen($jsonFileName, 'w');
+			fwrite($fp, $jsonUpdated);
+			fclose($fp);
+		}
+    	}
     }
 }
 

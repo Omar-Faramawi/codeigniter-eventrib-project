@@ -1,16 +1,19 @@
 var day = 1;
-var speaker_count = 1;
-var survey_count = 0;
+var speaker_count = parseInt($('#add-another-speaker').attr('count')) + 1;
+var survey_count = parseInt($('#add-another-survey').attr('count'));
 var question_count = 0;
 var exmap_count = 1;
 var inmap_count = 1;
-var exhibitor_count = 1;
-var day_count = 0;
+var exhibitor_count = parseInt($('#add-another-exhibitor').attr('count'));
+var day_count = parseInt($('#add-another-agenda').attr('count'));
 var agenda_item_count = 0;
-var day_field_value = 1;
+var day_field_value = parseInt($('#add-another-agenda').attr('count'));
 var form_data = new FormData();
 
 $(document).on('click', "#add-another-exhibitor", function(){
+	if(exhibitor_count == 0){
+		exhibitor_count++;
+	}
 	$('#exhibitor-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;' id='exhibitor-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-name'> <label for='Firstname1' style='top:-13px;'>Exhibitor name</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-about'> <label for='Firstname1' style='top:-13px;'>About</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-action'> <label for='Firstname1' style='top:-13px;'>Action</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-order'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-facebook'> <label for='Firstname1' style='top:-13px;'>Facebook</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-twitter'> <label for='Firstname1' style='top:-13px;'>Twitter</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-linkedin'> <label for='Firstname1' style='top:-13px;'>Linkedin</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+exhibitor_count+"-exhibitor-url'> <label for='Firstname1' style='top:-13px;'>Url</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+exhibitor_count+"-exhibitor-image' typec='exhibitor-"+exhibitor_count+"-thumbnail-browser' id='filename-exhibitor-"+exhibitor_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='exhibitor-"+exhibitor_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='exhibitor-"+exhibitor_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='exhibitor-"+exhibitor_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='exhibitor-"+exhibitor_count+"-thumbnail' img='exhibitor-"+exhibitor_count+"-thumbnail-browser'>Cancel</a> </div> </div></div>");
 	exhibitor_count++;
 });
@@ -23,24 +26,33 @@ $(document).on('click', "#add-another-speaker", function(){
 $(document).on('click', "#add-another-survey", function(){
 	question_count = 0;
 	survey_count++;
-	$('#survey-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;'id='survey-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-name'> <label for='Firstname1' style='top:-13px;'>Name</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-order'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row' style='background-color:#efefef;padding-bottom:22px;padding-top:22px;border:1px solid #e0e0e0;'> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-0-survey-question'> <label for='Firstname1' style='top:-13px;'>Add question</label> </div> <a style='cursor:pointer' class='add-another-question'><i class='md md-control-point'></i> Add another question</a> </div> </div></div>");
+	$('#survey-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;'id='survey-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-name'> <label for='Firstname1' style='top:-13px;'>Name</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-order'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-survey-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row' style='background-color:#efefef;padding-bottom:22px;padding-top:22px;border:1px solid #e0e0e0;'> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-0-survey-question'> <label for='Firstname1' style='top:-13px;'>Add question</label> </div> <a style='cursor:pointer' survey='"+survey_count+"' count='0' class='add-another-question'><i class='md md-control-point'></i> Add another question</a> </div> </div></div>");
 });
 
 $(document).on('click','.add-another-question', function(){
+	question_count = parseInt($(this).attr('count'));
+	survey_count_this = parseInt($(this).attr('survey'));
+	if(question_count == 0){
+		question_count++;
+	}
+	$(this).before("<div class='form-group'> <input type='text' class='form-control' name='"+survey_count_this+"-"+question_count+"-survey-question'> <label for='Firstname1' style='top:-13px;'>Add question</label> <a class='event-create-close-question' style='cursor:pointer;'><i class='md md-close'></i> cancel question</a> </div>");
 	question_count++;
-	$(this).before("<div class='form-group'> <input type='text' class='form-control' name='"+survey_count+"-"+question_count+"-survey-question'> <label for='Firstname1' style='top:-13px;'>Add question</label> <a class='event-create-close-question' style='cursor:pointer;'><i class='md md-close'></i> cancel question</a> </div>");
+	$(this).attr('count', question_count);
 });
 
 $(document).on('click', '.add-another-agenda-item', function(){
+	agenda_item_count = parseInt($(this).attr('count'));
+	day_count_this = parseInt($(this).attr('day'));
+	$(this).before("<div style='margin-top:25px;' id='"+day_count_this+"-"+day_count_this+"-"+agenda_item_count+"-agenda-item'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count_this+"-"+agenda_item_count+"-agenda-title'> <label for='Firstname1' style='top:-13px;'>Session title</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count_this+"-"+agenda_item_count+"-agenda-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count_this+"-"+agenda_item_count+"-agenda-from'> <label for='Firstname1' style='top:-13px;'>from</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count_this+"-"+agenda_item_count+"-agenda-to'> <label for='Firstname1' style='top:-13px;'>to</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count_this+"-"+agenda_item_count+"-agenda-order'> <label for='Firstname1' style='top:-13px;'>order</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <select id='select1' name='"+day_count_this+"-"+agenda_item_count+"-agenda-speaker' class='form-control'> <option value=''>&nbsp;</option> </select> <label style='top:-13px;' for='select1'>Speaker</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+day_count_this+"-"+agenda_item_count+"-agenda-image' typec='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail-browser' id='filename-agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail' img='agenda-"+day_count_this+"-"+agenda_item_count+"-thumbnail-browser'>Cancel</a> </div> </div></div>");
 	agenda_item_count++;
-	$(this).before("<div style='margin-top:25px;' id='"+day_count+"-"+day_count+"-"+agenda_item_count+"-agenda-item'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-title'> <label for='Firstname1' style='top:-13px;'>Session title</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-from'> <label for='Firstname1' style='top:-13px;'>from</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-to'> <label for='Firstname1' style='top:-13px;'>to</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-order'> <label for='Firstname1' style='top:-13px;'>order</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <select id='select1' name='"+day_count+"-"+agenda_item_count+"-agenda-speaker' class='form-control'> <option value=''>&nbsp;</option> </select> <label style='top:-13px;' for='select1'>Speaker</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+day_count+"-"+agenda_item_count+"-agenda-image' typec='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' id='filename-agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail' img='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser'>Cancel</a> </div> </div></div>");
+	$(this).attr('count', agenda_item_count);
 });
 
 $(document).on('click', "#add-another-agenda", function(){
 	agenda_item_count = 0;
-	day_count++;
+	$('#agenda-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;' id='agenda-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-day' value='Day "+day_field_value+"'> <label for='Firstname1' style='top:-13px;'>Day</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control datepicker' name='"+day_count+"-"+agenda_item_count+"-agenda-date'> <label for='Firstname1' style='top:-13px;'>Date</label> </div> </div> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-thisorder'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div> <div id='"+day_count+"-"+day_count+"-"+agenda_item_count+"-agenda-item'> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-title'> <label for='Firstname1' style='top:-13px;'>Session title</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-from'> <label for='Firstname1' style='top:-13px;'>from</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-to'> <label for='Firstname1' style='top:-13px;'>to</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-order'> <label for='Firstname1' style='top:-13px;'>order</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <select id='select1' name='"+day_count+"-"+agenda_item_count+"-agenda-speaker' class='form-control'> <option value=''>&nbsp;</option> </select> <label for='select1' style='top:-13px;'>Speaker</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+day_count+"-"+agenda_item_count+"-agenda-image' typec='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' id='filename-agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail' img='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser'>Cancel</a> </div> </div> </div> <a class='pull-right add-another-agenda-item' day='"+day_count+"' count='1' style='margin-top:15px; cursor:pointer;'><i class='md md-control-point'></i> Add another agenda item in <span id='"+day_count+"-"+agenda_item_count+"-agenda-item-span'>Day "+day_field_value+"</span></a> </div>");
 	day_field_value++;
-	$('#agenda-card-content').append("<div class='card-body' style='border-top:1px solid #ccc;' id='agenda-card'> <div class='row'> <div class='col-md-12'> <a class='btn btn-icon-toggle btn-close pull-right event-create-close-card'><i class='md md-close'></i></a> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-day' value='Day "+day_field_value+"'> <label for='Firstname1' style='top:-13px;'>Day</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control datepicker' name='"+day_count+"-"+agenda_item_count+"-agenda-date'> <label for='Firstname1' style='top:-13px;'>Date</label> </div> </div> <div class='col-sm-12'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-thisorder'> <label for='Firstname1' style='top:-13px;'>Order</label> </div> </div> </div> <div id='"+day_count+"-"+day_count+"-"+agenda_item_count+"-agenda-item'> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-title'> <label for='Firstname1' style='top:-13px;'>Session title</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-desc'> <label for='Firstname1' style='top:-13px;'>Description</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-from'> <label for='Firstname1' style='top:-13px;'>from</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control eventribe-timepiker' name='"+day_count+"-"+agenda_item_count+"-agenda-to'> <label for='Firstname1' style='top:-13px;'>to</label> </div> </div> </div> <div class='row'> <div class='col-sm-6'> <div class='form-group'> <input type='text' class='form-control' name='"+day_count+"-"+agenda_item_count+"-agenda-order'> <label for='Firstname1' style='top:-13px;'>order</label> </div> </div> <div class='col-sm-6'> <div class='form-group'> <select id='select1' name='"+day_count+"-"+agenda_item_count+"-agenda-speaker' class='form-control'> <option value=''>&nbsp;</option> </select> <label for='select1' style='top:-13px;'>Speaker</label> </div> </div> </div> <div class='row'> <div class='col-sm-12'> <h4>Image</h4> <div class='input-group'> <span class='input-group-btn'> <span class='btn btn-primary btn-file' > Browse… <input type='file' multiple='' name='"+day_count+"-"+agenda_item_count+"-agenda-image' typec='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' id='filename-agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </span> </span> <input type='text' class='form-control' readonly='' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail'> </div> <img src='<?= base_url(); ?>' id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='width:60px;height:60px;margin-top:15px;display:none;'> <a id='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser' style='display:none;cursor:pointer;' class='canceluploadcontent' field='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail' img='agenda-"+day_count+"-"+agenda_item_count+"-thumbnail-browser'>Cancel</a> </div> </div> </div> <a class='pull-right add-another-agenda-item' style='margin-top:15px; cursor:pointer;'><i class='md md-control-point'></i> Add another agenda item in <span id='"+day_count+"-"+agenda_item_count+"-agenda-item-span'>Day "+day_field_value+"</span></a> </div>");
+	day_count++;
 });
 
 $(document).on('focus', "select[name*='-agenda-speaker']", function(){
@@ -80,7 +92,7 @@ $(document).on('click', '.event-create-close-question', function(){
 	$(this).parent().remove();
 });
 
-$(document).on('click', '#submit-content', function(){
+$(document).on('click', 'a#submit-content', function(){
 	//cards objects arrays
 	var speakers = new Array();
 	var surveys = new Array();
@@ -292,18 +304,37 @@ $(document).on('click', '#submit-content', function(){
 		}
 		day_counter++;
 	}
-	// move to publish screen
-	var step_con = $('#step-con-publish');
-	var step = step_con.find(".step");
-    var stepArrow = step_con.find(".arrow-right");
-    $('.step').removeClass("active-eventribe");
-    $('.arrow-right').removeClass('active-arrow');
-    step.addClass("active-eventribe");
-    stepArrow.addClass("active-arrow");
-    $('#clear').hide();
-    $('#publish-clear').show();
-    $("html, body").animate({ scrollTop: 0 }, "slow");
-  
+
+	if($(this).attr('to') == 'publish'){
+		form_data.append('action', 'saveparse');
+		// move to publish screen
+		var step_con = $('#step-con-publish');
+		var step = step_con.find(".step");
+	    var stepArrow = step_con.find(".arrow-right");
+	    $('.step').removeClass("active-eventribe");
+	    $('.arrow-right').removeClass('active-arrow');
+	    step.addClass("active-eventribe");
+	    stepArrow.addClass("active-arrow");
+	    $('#clear').hide();
+	    $('#publish-clear').show();
+	    $("html, body").animate({ scrollTop: 0 }, "slow");
+	}else if($(this).attr('to') == 'features'){
+		form_data.append('action', 'savejson');
+		$.ajax({
+			url: base_url + "event/content_submit",
+			type: "POST",
+			data: form_data,
+			async: false,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function(data){
+				console.log(data);
+				window.location = base_url + 'event/create';
+			}
+		});
+	}
+	
 	// $('.step-con').click(function() {
 	// 	var step_con $('.steo-con[class="active"]');
 
@@ -358,6 +389,9 @@ $(document).on('change', 'input[type="file"]', function(){
 
 $(document).on('click', '.canceluploadcontent', function(){
 	var field = $(this).attr('field');
+	$.get($(this).attr('url'), function(data){
+		console.log(data);
+	});
 	var img = $(this).attr('img');
 	$('img#' + img).attr('src',"");
     $("input#" + field).val("");

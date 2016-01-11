@@ -807,14 +807,43 @@
    <!-- External Map -->
    <?php if($features['exmap'] != "0" ){ 
       $exmapPoints_count = 0;
-      if(isset($object) && count($object->exmapPoints) != 0 && $object->exmapPoints[0]->pin_name != ""){
+      if(isset($object) && count($object->exmapPoints) != 0){
          ?>
    <div class="row" style="margin-top:20px;" id="exmap-container">
       <div class="card" >
          <div class="card-head style-primary custom-card-head">
             <header>External Map</header>
          </div>
+         <div class="map_canvas" style="height:300px;"></div>
          <div id='exmap-card-content'>
+          <div class="card-body">
+               <div class="row" id='map'>
+               <div class="col-md-4">
+                  <div class="form-group">
+                        <input type="text" class="form-control" id='geocomplete' key="geoaddress">
+                        <label for="Firstname1" style="top:-13px;">Address</label>
+                     </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <input type="text" class="form-control" id='lat' key="geolat">
+                        <label for="Firstname1" style="top:-13px;">Latitude</label>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id='lng' key="geolong">
+                        <label for="Firstname1" style="top:-13px;">Longitude</label>
+                     </div>
+                     <a id="reset" href="#" style="display:none;">Reset Marker</a>
+               </div>
+               </div>
+            </div>
+            <div class="card-head style-default" count='<?= count($object->exmapPoints); ?>' style="cursor:pointer;" id='add-another-exmap'>
+            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add point</center>
+         </div>
             <?php
                for($i = 0; $i < count($object->exmapPoints); $i++){
                   ?>
@@ -860,9 +889,6 @@
                   }
                   ?>
          </div>
-         <div class="card-head style-default" count='<?= $exmapPoints_count; ?>' style="cursor:pointer;" id='add-another-exmap'>
-            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another pin</center>
-         </div>
       </div>
    </div>
    <?php
@@ -872,54 +898,84 @@
       <div class="card" >
          <div class="card-head style-primary custom-card-head">
             <header>External Map</header>
+            
          </div>
+         <div class="map_canvas" style="height:300px;"></div>
          <div id='exmap-card-content'>
-            <div class="card-body" id="exmap-card">
-               <div class="row">
-                  <div class="col-sm-6">
-                     <div class="form-group">
-                        <input type="text" class="form-control" name="0-exmap-pin-name">
-                        <label for="Firstname1" style="top:-13px;">Pin Name</label>
-                     </div>
-                  </div>
-                  <div class="col-sm-6">
-                     <div class="form-group">
-                        <input type="text" class="form-control" name="0-exmap-address">
+            <div class="card-body">
+               <div class="row" id='map'>
+               <div class="col-md-4">
+                  <div class="form-group">
+                        <input type="text" class="form-control" id='geocomplete' key="geoaddress">
                         <label for="Firstname1" style="top:-13px;">Address</label>
                      </div>
-                  </div>
                </div>
-               <div class="row">
+               <div class="col-md-4">
                   <div class="col-sm-6">
                      <div class="form-group">
-                        <input type="text" class="form-control" name="0-exmap-lat">
+                        <input type="text" class="form-control" id='lat' key="geolat">
                         <label for="Firstname1" style="top:-13px;">Latitude</label>
                      </div>
                   </div>
-                  <div class="col-sm-6">
-                     <div class="form-group">
-                        <input type="text" class="form-control" name="0-exmap-long">
+               </div>
+               <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id='lng' key="geolong">
                         <label for="Firstname1" style="top:-13px;">Longitude</label>
                      </div>
-                  </div>
-                  <div class="col-sm-12">
-                     <div class="form-group">
-                        <input type="text" class="form-control" name="0-exmap-order">
-                        <label for="Firstname1" style="top:-13px;">Order</label>
-                     </div>
-                  </div>
+                     <a id="reset" href="#" style="display:none;">Reset Marker</a>
+               </div>
                </div>
             </div>
+            <div class="card-head style-default" count='0' style="cursor:pointer;" id='add-another-exmap'>
+            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add point</center>
          </div>
-         <div class="card-head style-default" count='0' style="cursor:pointer;" id='add-another-exmap'>
-            <center><i style="margin-bottom:1px;" class="md md-control-point"></i> Add another pin</center>
          </div>
+         
       </div>
    </div>
    <?php
       }
       ?>
    <?php } ?>
+  <!-- <div class="row">
+      <div class="card" >
+          <div id='exmap-card-content'>
+            <div class="card-body" id="exmap-card">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="map_canvas" style="height:300px;"></div>
+               </div>
+            </div>
+            <form id='map'>
+               <div class="row">
+                  <div class="col-sm-12">
+                     <div class="form-group">
+                        <input type="text" id="geocomplete" class="form-control" value="Cairo, Cairo Governorate, Egypt">
+                        <label for="Firstname1" style="top:-13px;">Address</label>
+                     </div>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <input type="text" value='' name="lat">
+                        <label for="Firstname1" style="top:-13px;">Lat</label>
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group">
+                        <input type="text" value='' name="lng">
+                        <label for="Firstname1" style="top:-13px;">Lng</label>
+                     </div>
+                     <a id="reset" href="#" style="display:none;">Reset Marker</a>
+                  </div>
+               </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>-->
    <!-- Internal Map -->
    <?php if($features['inmap'] != "0" ){ 
       $inmapSections_count = 0;

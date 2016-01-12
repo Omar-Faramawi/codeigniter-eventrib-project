@@ -9,6 +9,7 @@ var day_count = parseInt($('#add-another-agenda').attr('count'));
 var agenda_item_count = 0;
 var day_field_value = parseInt($('#add-another-agenda').attr('count'));
 var form_data = new FormData();
+var validation_flag = false;
 
 $(document).on('click', "#add-another-exhibitor", function(){
 	if(exhibitor_count == 0){
@@ -101,7 +102,57 @@ $(document).on('click', '.event-create-close-question', function(){
 	$(this).parent().remove();
 });
 
+function validateEmail(x) {
+    var atpos = x.indexOf("@");
+    var dotpos = x.lastIndexOf(".");
+    if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
+        return false;
+    }else{
+    	return true;
+    }
+}
+
+function validateUrl(urlToValidate){
+	var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+	if (!myRegExp.test(urlToValidate)){
+		return false;
+	}else{
+		return  true;
+	}
+}
+
+function validateDate(date){
+	var myRegExp =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+	if (!myRegExp.test(date)){
+		return false;
+	}else{
+		return  true;
+	}
+}
+
+function isValidLatitude(latitude){
+	var reg = new RegExp("(-?[0-8]?[0-9](\.\d*)?)|-?90(\.[0]*)?");
+	if( reg.exec(latitude) ) {
+		return true;
+	} else {
+		console.log('wrong lat');
+		return false;
+	}
+}
+
+function isValidLongitude(longitude){
+	var reg = new RegExp("(-?[0-8]?[0-9](\.\d*)?)|-?90(\.[0]*)?");
+	if( reg.exec(longitude) ) {
+		return true;
+	} else {
+		console.log('wrong long');
+		return false;
+	}
+}
+
 $(document).on('click', 'a#submit-content', function(){
+	validation_flag = false;
+	console.log('validation:', validation_flag);
 	//cards objects arrays
 	var speakers = new Array();
 	var surveys = new Array();
@@ -112,12 +163,52 @@ $(document).on('click', 'a#submit-content', function(){
 	//grap data in form object
 	if($('#agenda-container').length){
 		$("div#agenda-card").each(function(){
+			if($(this).find('input[name*="-agenda-day"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-agenda-day"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-agenda-day"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-agenda-date"]').val() == '' || validateDate($(this).find('input[name*="-agenda-date"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-agenda-date"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-agenda-date"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-agenda-thisorder"]').val() == '' || isNaN($(this).find('input[name*="-agenda-thisorder"]').val())){
+				validation_flag = true;
+				$(this).find('input[name*="-agenda-thisorder"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-agenda-thisorder"]').next().css('color', 'red');
+			}
 			var day = $(this).find('input[name*="-agenda-day"]').val();
 			var date = $(this).find('input[name*="-agenda-date"]').val();
 			var dayorder = $(this).find('input[name*="-agenda-thisorder"]').val();
 			var agendaItemsArray = new Array();
 			var agendaItems = $(this).find('div[id*="-agenda-item"]');
 			agendaItems.each(function(){
+				if($(this).find('input[name*="-agenda-title"]').val() == ''){
+					validation_flag = true;
+					$(this).find('input[name*="-agenda-title"]').css('border-bottom-color', 'red').css('color','red');
+					$(this).find('input[name*="-agenda-title"]').next().css('color', 'red');
+				}
+				if($(this).find('input[name*="-agenda-desc"]').val() == ''){
+					validation_flag = true;
+					$(this).find('input[name*="-agenda-desc"]').css('border-bottom-color', 'red').css('color','red');
+					$(this).find('input[name*="-agenda-desc"]').next().css('color', 'red');
+				}
+				if($(this).find('input[name*="-agenda-from"]').val() == ''){
+					validation_flag = true;
+					$(this).find('input[name*="-agenda-from"]').css('border-bottom-color', 'red').css('color','red');
+					$(this).find('input[name*="-agenda-from"]').next().css('color', 'red');
+				}
+				if($(this).find('input[name*="-agenda-to"]').val() == ''){
+					validation_flag = true;
+					$(this).find('input[name*="-agenda-to"]').css('border-bottom-color', 'red').css('color','red');
+					$(this).find('input[name*="-agenda-to"]').next().css('color', 'red');
+				}
+				if($(this).find('input[name*="-agenda-order"]').val() == '' || isNaN($(this).find('input[name*="-agenda-order"]'))){
+					validation_flag = true;
+					$(this).find('input[name*="-agenda-order"]').css('border-bottom-color', 'red').css('color','red');
+					$(this).find('input[name*="-agenda-order"]').next().css('color', 'red');
+				}
 				var item = {
 					'title': $(this).find('input[name*="-agenda-title"]').val(),
 					'description': $(this).find('input[name*="-agenda-desc"]').val(),
@@ -141,6 +232,46 @@ $(document).on('click', 'a#submit-content', function(){
 	}
 	if($('#exhibitors-container').length){
 		$('div#exhibitor-card').each(function(){
+			if($(this).find('input[name*="-exhibitor-name"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-name"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-name"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-about"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-about"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-about"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-action"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-action"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-action"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-order"]').val() == '' || isNaN($(this).find('input[name*="-exhibitor-order"]').val())){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-order"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-order"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-facebook"]').val() == '' || validateUrl($(this).find('input[name*="-exhibitor-facebook"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-facebook"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-facebook"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-twitter"]').val() == '' || validateUrl($(this).find('input[name*="-exhibitor-twitter"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-twitter"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-twitter"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-linkedin"]').val() == '' || validateUrl($(this).find('input[name*="-exhibitor-linkedin"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-linkedin"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-linkedin"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exhibitor-url"]').val() == '' || validateUrl($(this).find('input[name*="-exhibitor-url"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-exhibitor-url"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exhibitor-url"]').next().css('color', 'red');
+			}
 			var exhibitor = {
 				'name': $(this).find('input[name*="-exhibitor-name"]').val(),
 				'about': $(this).find('input[name*="-exhibitor-about"]').val(),
@@ -157,7 +288,53 @@ $(document).on('click', 'a#submit-content', function(){
 		//console.log("Exhibitors: ", exhibitors);
 	}
 	if($('#speakers-container').length){
+		var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
 		$('div#speaker-card').each(function(){
+			if($(this).find('input[name*="-speaker-name"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-name"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-name"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-title"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-title"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-title"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-email"]').val() == '' || validateEmail($(this).find('input[name*="-speaker-email"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-email"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-email"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-company"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-company"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-company"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-introduction"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-introduction"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-introduction"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-order"]').val() == '' || isNaN($(this).find('input[name*="-speaker-order"]').val())){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-order"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-order"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-facebook"]').val() == '' || validateUrl($(this).find('input[name*="-speaker-facebook"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-facebook"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-facebook"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-twitter"]').val() == '' || validateUrl($(this).find('input[name*="-speaker-twitter"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-twitter"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-twitter"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-speaker-linkedin"]').val() == '' || validateUrl($(this).find('input[name*="-speaker-linkedin"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-speaker-linkedin"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-speaker-linkedin"]').next().css('color', 'red');
+			}
 			var speaker = {
 				'name': $(this).find('input[name*="-speaker-name"]').val(),
 				'title': $(this).find('input[name*="-speaker-title"]').val(),
@@ -180,8 +357,28 @@ $(document).on('click', 'a#submit-content', function(){
 			var questionsElement = $(this).find('input[name*="-survey-question"]');
 			var questions = new Array();
 			questionsElement.each(function(){
+				if($(this).val() == ""){
+					validation_flag = true;
+					$(this).css('border-bottom-color', 'red').css('color','red');
+					$(this).next().css('color', 'red');
+				}
 				questions.push($(this).val());
 			});
+			if($(this).find('input[name*="-survey-name"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-survey-name"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-survey-name"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-survey-desc"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-survey-desc"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-survey-desc"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-survey-order"]').val() == '' || isNaN($(this).find('input[name*="-survey-order"]').val())){
+				validation_flag = true;
+				$(this).find('input[name*="-survey-order"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-survey-order"]').next().css('color', 'red');
+			}
 			var survey = {
 				'name': $(this).find('input[name*="-survey-name"]').val(),
 				'order': $(this).find('input[name*="-survey-order"]').val(),
@@ -194,6 +391,32 @@ $(document).on('click', 'a#submit-content', function(){
 	}
 	if($('#exmap-container').length){
 		$('div#exmap-card').each(function(){
+			if($(this).find('input[name*="-exmap-pin-name"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-exmap-pin-name"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exmap-pin-name"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exmap-address"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-exmap-address"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exmap-address"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exmap-lat"]').val() == '' || isValidLatitude($(this).find('input[name*="-exmap-lat"]').val()) == false){
+				validation_flag = true;
+				$(this).find('input[name*="-exmap-lat"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exmap-lat"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exmap-long"]').val() == '' || isValidLongitude($(this).find('input[name*="-exmap-long"]').val()) == false){
+				
+				validation_flag = true;
+				$(this).find('input[name*="-exmap-long"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exmap-long"]').next().css('color', 'red');
+			}
+			if($(this).find('input[name*="-exmap-order"]').val() == '' || isNaN($(this).find('input[name*="-exmap-order"]').val())){
+				validation_flag = true;
+				$(this).find('input[name*="-exmap-order"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-exmap-order"]').next().css('color', 'red');
+			}
 			var exmap = {
 				'pin_name': $(this).find('input[name*="-exmap-pin-name"]').val(),
 				'address': $(this).find('input[name*="-exmap-address"]').val(),
@@ -207,6 +430,11 @@ $(document).on('click', 'a#submit-content', function(){
 	}
 	if($('#inmap-container').length){
 		$('div#inmap-card').each(function(){
+			if($(this).find('input[name*="-inmap-name"]').val() == ''){
+				validation_flag = true;
+				$(this).find('input[name*="-inmap-name"]').css('border-bottom-color', 'red').css('color','red');
+				$(this).find('input[name*="-inmap-name"]').next().css('color', 'red');
+			}
 			var inmap = {
 				'header': $(this).find('input[name*="-inmap-name"]').val(),
 				'image': $(this).find('input[name*="-inmap-image"]').prop("files")[0]
@@ -313,44 +541,40 @@ $(document).on('click', 'a#submit-content', function(){
 		}
 		day_counter++;
 	}
+	if(validation_flag == false){
 
-	if($(this).attr('to') == 'publish'){
-		form_data.append('action', 'saveparse');
-		// move to publish screen
-		var step_con = $('#step-con-publish');
-		var step = step_con.find(".step");
-	    var stepArrow = step_con.find(".arrow-right");
-	    $('.step').removeClass("active-eventribe");
-	    $('.arrow-right').removeClass('active-arrow');
-	    step.addClass("active-eventribe");
-	    stepArrow.addClass("active-arrow");
-	    $('#clear').hide();
-	    $('#publish-clear').show();
-	    $("html, body").animate({ scrollTop: 0 }, "slow");
-	}else if($(this).attr('to') == 'features'){
-		form_data.append('action', 'savejson');
-		$.ajax({
-			url: base_url + "event/content_submit",
-			type: "POST",
-			data: form_data,
-			async: false,
-			cache: false,
-			contentType: false,
-			processData: false,
-			success: function(data){
-				console.log(data);
-				window.location = base_url + 'event/create';
-			}
-		});
+		if($(this).attr('to') == 'publish'){
+			form_data.append('action', 'saveparse');
+			// move to publish screen
+			var step_con = $('#step-con-publish');
+			var step = step_con.find(".step");
+		    var stepArrow = step_con.find(".arrow-right");
+		    $('.step').removeClass("active-eventribe");
+		    $('.arrow-right').removeClass('active-arrow');
+		    step.addClass("active-eventribe");
+		    stepArrow.addClass("active-arrow");
+		    $('#clear').hide();
+		    $('#publish-clear').show();
+		    $("html, body").animate({ scrollTop: 0 }, "slow");
+		}else if($(this).attr('to') == 'features'){
+			form_data.append('action', 'savejson');
+			$.ajax({
+				url: base_url + "event/content_submit",
+				type: "POST",
+				data: form_data,
+				async: false,
+				cache: false,
+				contentType: false,
+				processData: false,
+				success: function(data){
+					console.log(data);
+					window.location = base_url + 'event/create';
+				}
+			});
+		}	
 	}
-	
-	// $('.step-con').click(function() {
-	// 	var step_con $('.steo-con[class="active"]');
+	console.log('validation:', validation_flag);
 
- //       
- //    });
-
-	//redirect after success
 });
 
 $(document).on('click', '#save-content', function(){
